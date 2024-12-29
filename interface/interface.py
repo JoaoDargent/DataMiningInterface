@@ -3,10 +3,6 @@ import os
 import pandas as pd
 import pickle
 
-# Add this near the top of your file, after the imports
-st.write("Current working directory:", os.getcwd())
-st.write("Directory contents:", os.listdir())
-
 # Create sidebar navigation
 st.sidebar.title('Navigation')
 page = st.sidebar.radio('Go to', ['About Us', 'EDA Raw Data', 'Segmentation & Clustering', 'Final Clusterization'])
