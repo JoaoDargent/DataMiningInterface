@@ -34,7 +34,7 @@ elif page == 'EDA Raw Data':
         
         # Display the selected plot
         st.image(os.path.join(plot_directory, selected_plot + os.path.splitext(plot_options[0])[1]), 
-                use_container_width=True)
+                width=None)
 
 # Segmentation and Clustering page
 elif page == 'Segmentation & Clustering':
@@ -54,7 +54,7 @@ elif page == 'Segmentation & Clustering':
         """)
         
         try:
-            st.image('plots/clustering/demographic/elbow_method.png', use_container_width=True)
+            st.image('plots/clustering/demographic/elbow_method.png', width=None)
             st.write("""
             **Analysis of Elbow Method Results:**
             - The graph shows a clear elbow at k=4 clusters
@@ -79,7 +79,7 @@ elif page == 'Segmentation & Clustering':
                 # Silhouette Analysis
                 st.write("### Silhouette Analysis")
                 st.image('plots/clustering/demographic/hierarchical_kmeans/silhouette.png', 
-                       use_container_width=True)
+                       width=None)
                 st.write("""
                 The silhouette analysis validates our cluster selection:
                 - Higher silhouette scores indicate better-defined clusters
@@ -89,7 +89,7 @@ elif page == 'Segmentation & Clustering':
                 # Cluster Profiles
                 st.write("### Cluster Profiles")
                 st.image('plots/clustering/demographic/hierarchical_kmeans/cluster_profiles_3.png', 
-                       use_container_width=True)
+                       width=None)
                 st.write("""
                 Analysis of 3-cluster solution:
                 - Shows the distribution of features across three distinct groups
@@ -98,7 +98,7 @@ elif page == 'Segmentation & Clustering':
                 """)
                 
                 st.image('plots/clustering/demographic/hierarchical_kmeans/cluster_profiles_4.png', 
-                       use_container_width=True)
+                       width=None)
                 st.write("""
                 Analysis of 4-cluster solution:
                 - Provides a more granular segmentation
@@ -114,7 +114,7 @@ elif page == 'Segmentation & Clustering':
                 # Hit Map View
                 st.write("### SOM Hit Map")
                 st.image('plots/clustering/demographic/som_kmeans/hitMapView.png', 
-                       use_container_width=True)
+                       width=None)
                 st.write("""
                 The SOM hit map shows the distribution of data points across the self-organizing map:
                 - Each cell represents a node in the SOM
@@ -124,13 +124,13 @@ elif page == 'Segmentation & Clustering':
                 # Inertia Plot
                 st.write("### Inertia Analysis")
                 st.image('plots/clustering/demographic/som_kmeans/inertia.png', 
-                       use_container_width=True)
+                       width=None)
                 st.write("Shows the convergence of the SOM algorithm")
 
                 # Final Clusters
                 st.write("### Final Clusters")
                 st.image('plots/clustering/demographic/som_kmeans/final_cluster.png',
-                       use_container_width=True)
+                       width=None)
                 st.write("Visualization of the final cluster assignments")
             except Exception as e:
                 st.error(f"Error loading SOM + K-means visualizations: {str(e)}")
@@ -141,17 +141,17 @@ elif page == 'Segmentation & Clustering':
                 # Hit Map View
                 st.write("### SOM Hit Map")
                 st.image('plots/clustering/demographic/som_hierarchichal/hitMapView.png', 
-                       use_container_width=True)
+                       width=None)
                 
                 # Dendrogram
                 st.write("### Hierarchical Clustering Dendrogram")
                 st.image('plots/clustering/demographic/som_hierarchichal/dendogram.png', 
-                       use_container_width=True)
+                       width=None)
                 
                 # Cluster Profiles
                 st.write("### Cluster Profiles")
                 st.image('plots/clustering/demographic/som_hierarchichal/cluster_profiles_6.png', 
-                       use_container_width=True)
+                       width=None)
             except Exception as e:
                 st.error(f"Error loading SOM + Hierarchical visualizations: {str(e)}")
                 
@@ -161,14 +161,14 @@ elif page == 'Segmentation & Clustering':
                 # Epsilon Selection
                 st.write("### Epsilon Parameter Selection")
                 st.image('plots/clustering/demographic/dbscan/eps.png', 
-                       use_container_width=True)
+                       width=None)
                 st.image('plots/clustering/demographic/dbscan/epsZoom.png', 
-                       use_container_width=True)
+                       width=None)
                 
                 # Cluster Profiles
                 st.write("### Cluster Profiles")
                 st.image('plots/clustering/demographic/dbscan/cluster_profiles_5.png', 
-                       use_container_width=True)
+                       width=None)
             except Exception as e:
                 st.error(f"Error loading DBSCAN visualizations: {str(e)}")
                 
@@ -177,7 +177,7 @@ elif page == 'Segmentation & Clustering':
             try:
                 st.write("### Cluster Profiling Comparison")
                 st.image('plots/clustering/demographic/combined_results/cluster_profiling.png', 
-                       use_container_width=True)
+                       width=None)
                 st.write("""
                 Comparison of clustering results across different methods:
                 - Shows how different approaches segment the customers
@@ -197,7 +197,7 @@ elif page == 'Segmentation & Clustering':
         """)
         
         try:
-            st.image('plots/clustering/purchase/elbow_method.png', use_container_width=True)
+            st.image('plots/clustering/purchase/elbow_method.png', width=None)
             st.write("""
             **Analysis of Elbow Method Results:**
             - The elbow curve indicates an optimal point at k=3 clusters
@@ -219,11 +219,11 @@ elif page == 'Segmentation & Clustering':
                 try:
                     st.write("### Silhouette Analysis")
                     st.image('plots/clustering/purchase/hierarchical_kmeans/silhouette.png', 
-                           use_container_width=True)
+                           width=None)
                     
                     st.write("### Final Cluster")
                     st.image('plots/clustering/purchase/hierarchical_kmeans/final_cluster.png', 
-                           use_container_width=True)
+                           width=None)
                 except Exception as e:
                     st.error(f"Error loading Hierarchical + K-means visualizations: {str(e)}")
             
@@ -232,7 +232,7 @@ elif page == 'Segmentation & Clustering':
                 try:
                     st.write("### Inertia Analysis") 
                     st.image('plots/clustering/purchase/som_kmeans/inertia.png',
-                           use_container_width=True)
+                           width=None)
                     st.write("""
                     Beyond 3 clusters, the decrease in inertia slows down, which suggests diminishing returns for adding more clusters.
                     
@@ -241,11 +241,11 @@ elif page == 'Segmentation & Clustering':
                     
                     st.write("### Hit Map View")
                     st.image('plots/clustering/purchase/som_kmeans/hitMapView.png',
-                           use_container_width=True)
+                           width=None)
                     
                     st.write("### Final Cluster")
                     st.image('plots/clustering/purchase/som_kmeans/final_cluster_3.png',
-                           use_container_width=True)
+                           width=None)
                 except Exception as e:
                     st.error(f"Error loading SOM + K-means visualizations: {str(e)}")
             with purchase_tab3:
@@ -253,7 +253,7 @@ elif page == 'Segmentation & Clustering':
                 try:
                     st.write("### Dendrogram")
                     st.image('plots/clustering/purchase/som_hierarchical/dendogram.png', 
-                           use_container_width=True)
+                           width=None)
                     st.write("""
                     The threshold (red line) intersects just below a noticeable "gap" in the dendrogram.
                     Above this threshold, the vertical distances between clusters are much larger, meaning clusters are more distinct.
@@ -263,11 +263,11 @@ elif page == 'Segmentation & Clustering':
                     
                     st.write("### Hit Map View")
                     st.image('plots/clustering/purchase/som_hierarchical/hitMapView.png', 
-                           use_container_width=True)
+                           width=None)
                     
                     st.write("### Final Cluster")
                     st.image('plots/clustering/purchase/som_hierarchical/final_cluster.png', 
-                           use_container_width=True)
+                           width=None)
                 except Exception as e:
                     st.error(f"Error loading SOM + Hierarchical visualizations: {str(e)}")
                     
@@ -276,14 +276,14 @@ elif page == 'Segmentation & Clustering':
                 try:
                     st.write("### Epsilon Parameter Selection")
                     st.image('plots/clustering/purchase/dbscan/eps.png', 
-                           use_container_width=True)
+                           width=None)
                     st.write("### Zooming in on the elbow part")
                     st.image('plots/clustering/purchase/dbscan/epsZoom.png', 
-                           use_container_width=True)
+                           width=None)
                     
                     st.write("### Cluster Profiling")
                     st.image('plots/clustering/purchase/dbscan/cluster_profiling.png', 
-                           use_container_width=True)
+                           width=None)
                 except Exception as e:
                     st.error(f"Error loading DBSCAN visualizations: {str(e)}")
                     
@@ -292,7 +292,7 @@ elif page == 'Segmentation & Clustering':
                 try:
                     st.write("### Combined Cluster Analysis")
                     st.image('plots/clustering/purchase/combined_clusters/combined_clusters.png', 
-                           use_container_width=True)
+                           width=None)
                 except Exception as e:
                     st.error(f"Error loading combined results: {str(e)}")
 
@@ -310,7 +310,7 @@ else:
     with final_tab1:
         st.header("Final Demographic Segments")
         try:
-            st.image('plots/final/demographic_segments.png', use_container_width=True)
+            st.image('plots/final/demographic_segments.png', width=None)
             st.write("""
             ### Key Demographic Segments:
             - Detailed breakdown of final customer segments
@@ -323,7 +323,7 @@ else:
     with final_tab2:
         st.header("Final Purchase Behavior Segments")
         try:
-            st.image('plots/final/purchase_segments.png', use_container_width=True)
+            st.image('plots/final/purchase_segments.png', width=None)
             st.write("""
             ### Key Purchase Behavior Segments:
             - Purchase patterns for each segment
