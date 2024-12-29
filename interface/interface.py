@@ -3,6 +3,10 @@ import os
 import pandas as pd
 import pickle
 
+# Add this near the top of your file, after the imports
+st.write("Current working directory:", os.getcwd())
+st.write("Directory contents:", os.listdir())
+
 # Create sidebar navigation
 st.sidebar.title('Navigation')
 page = st.sidebar.radio('Go to', ['About Us', 'EDA Raw Data', 'Segmentation & Clustering', 'Final Clusterization'])
@@ -21,20 +25,32 @@ elif page == 'EDA Raw Data':
     st.write('Upload your data and explore key insights through visualizations and statistics.')
     
     # Get the list of plot images from the rawdata folder
-    plot_directory = 'plots/rawData/Distributions'
-    plot_options = [f for f in os.listdir(plot_directory) if f.endswith(('.png', '.jpg', '.jpeg'))]
+    plot_directory = os.path.join(os.path.dirname(__file__), 'plots', 'rawData', 'Distributions')
     
-    # Check if there are any plot options available
-    if plot_options:
-        # Remove the file extensions for the selectbox options
-        plot_options_no_ext = [os.path.splitext(f)[0] for f in plot_options]
-        
-        # Dropdown menu to select a plot
-        selected_plot = st.selectbox('Select a plot to display:', plot_options_no_ext)
-        
-        # Display the selected plot
-        st.image(os.path.join(plot_directory, selected_plot + os.path.splitext(plot_options[0])[1]), 
-                width=None)
+    try:
+        # Check if directory exists
+        if not os.path.exists(plot_directory):
+            st.error(f"Directory not found: {plot_directory}")
+            st.info("Please make sure the plots directory is properly set up.")
+        else:
+            plot_options = [f for f in os.listdir(plot_directory) if f.endswith(('.png', '.jpg', '.jpeg'))]
+            
+            # Check if there are any plot options available
+            if plot_options:
+                # Remove the file extensions for the selectbox options
+                plot_options_no_ext = [os.path.splitext(f)[0] for f in plot_options]
+                
+                # Dropdown menu to select a plot
+                selected_plot = st.selectbox('Select a plot to display:', plot_options_no_ext)
+                
+                # Display the selected plot
+                st.image(os.path.join(plot_directory, selected_plot + os.path.splitext(plot_options[0])[1]), 
+                        width=None)
+            else:
+                st.warning("No image files found in the plots directory.")
+                st.info("Please add some .png, .jpg, or .jpeg files to the plots directory.")
+    except Exception as e:
+        st.error(f"Error accessing plots directory: {str(e)}")
 
 # Segmentation and Clustering page
 elif page == 'Segmentation & Clustering':
