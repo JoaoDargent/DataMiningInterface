@@ -362,13 +362,14 @@ else:
                 x='log_order_rate_per_week',
                 y='log_amount_spent_per_week',
                 z='chain_percentage',
-                color='merged_labels',  # Color points by cluster
+                color='customer_age',  # Changed from 'merged_labels' to an available column
                 labels={
                     'log_order_rate_per_week': 'Order Rate (log)',
                     'log_amount_spent_per_week': 'Amount Spent (log)',
-                    'chain_percentage': 'Chain Percentage'
+                    'chain_percentage': 'Chain Percentage',
+                    'customer_age': 'Customer Age'
                 },
-                title='Customer Segments in 3D Space'
+                title='Customer Distribution in 3D Space'
             )
 
             # Update the layout for better visualization
@@ -385,12 +386,14 @@ else:
             st.plotly_chart(fig, use_container_width=True)
             
             st.write("""
-            ### 3D Visualization of Customer Segments
+            ### 3D Visualization of Customer Distribution
             
-            This interactive 3D plot shows how customers are grouped based on three key metrics:
+            This interactive 3D plot shows how customers are distributed based on three key metrics:
             - **Order Rate**: Frequency of purchases (log-transformed)
             - **Amount Spent**: Total spending per week (log-transformed)
             - **Chain Percentage**: Preference for chain establishments
+            
+            Points are colored by customer age to show additional patterns.
             
             You can:
             - Rotate the plot by clicking and dragging
