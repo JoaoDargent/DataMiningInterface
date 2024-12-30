@@ -2,6 +2,7 @@ import streamlit as st
 import os
 import pandas as pd
 import pickle
+import plotly.express as px
 
 # Create sidebar navigation
 st.sidebar.title('Navigation')
@@ -317,7 +318,11 @@ else:
     st.write('View the final clustering results and customer segments.')
     
     # Create tabs for different clustering approaches
-    final_tab1, final_tab2 = st.tabs(["Demographic Segments", "Purchase Behavior Segments"])
+    final_tab1, final_tab2, final_tab3 = st.tabs([
+        "Demographic Segments", 
+        "Purchase Behavior Segments",
+        "3D Cluster Visualization"
+    ])
     
     with final_tab1:
         st.header("Final Demographic Segments")
@@ -344,3 +349,56 @@ else:
             """)
         except Exception as e:
             st.error(f"Error loading purchase behavior segments: {str(e)}")
+    
+    with final_tab3:
+        st.header("3D Cluster Visualization")
+        try:
+            # Load the data with cluster labels
+            df = pickle.load(open("preprocessed_data_numerical.pkl", "rb"))
+            
+            # Create the 3D scatter plot using Plotly Express
+            fig = px.scatter_3d(
+                df,
+                x='log_order_rate_per_week',
+                y='log_amount_spent_per_week',
+                z='chain_percentage',
+                color='merged_labels',  # Color points by cluster
+                labels={
+                    'log_order_rate_per_week': 'Order Rate (log)',
+                    'log_amount_spent_per_week': 'Amount Spent (log)',
+                    'chain_percentage': 'Chain Percentage'
+                },
+                title='Customer Segments in 3D Space'
+            )
+
+            # Update the layout for better visualization
+            fig.update_layout(
+                scene=dict(
+                    xaxis_title='Order Rate (log)',
+                    yaxis_title='Amount Spent (log)',
+                    zaxis_title='Chain Percentage'
+                ),
+                margin=dict(l=0, r=0, b=0, t=30)
+            )
+
+            # Display the plot in Streamlit
+            st.plotly_chart(fig, use_container_width=True)
+            
+            st.write("""
+            ### 3D Visualization of Customer Segments
+            
+            This interactive 3D plot shows how customers are grouped based on three key metrics:
+            - **Order Rate**: Frequency of purchases (log-transformed)
+            - **Amount Spent**: Total spending per week (log-transformed)
+            - **Chain Percentage**: Preference for chain establishments
+            
+            You can:
+            - Rotate the plot by clicking and dragging
+            - Zoom in/out using the scroll wheel
+            - Double click to reset the view
+            - Hover over points to see detailed information
+            """)
+
+        except Exception as e:
+            st.error(f"Error loading 3D visualization: {str(e)}")
+            st.info("Please make sure the data file is available and contains the required columns.")
