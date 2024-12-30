@@ -371,18 +371,34 @@ else:
                 (df['customer_age'] <= selected_age[1])
             ]
             
-            # Create the 3D scatter plot using Plotly Express with filtered data
+            # Define available features for axis selection
+            available_features = [
+                'log_order_rate_per_week', 
+                'log_amount_spent_per_week', 
+                'chain_percentage',
+                'customer_age',
+                'Recency', 
+                'average_product_price', 
+                'log_vendor_count'
+            ]
+            
+            # Add selection boxes for X, Y, and Z axes
+            x_axis = st.selectbox("Select X-axis", options=available_features, index=0)
+            y_axis = st.selectbox("Select Y-axis", options=available_features, index=1)
+            z_axis = st.selectbox("Select Z-axis", options=available_features, index=2)
+            
+            # Create the 3D scatter plot using Plotly Express with selected axes
             fig = px.scatter_3d(
                 filtered_df,
-                x='log_order_rate_per_week',
-                y='log_amount_spent_per_week',
-                z='chain_percentage',
+                x=x_axis,
+                y=y_axis,
+                z=z_axis,
                 color='customer_age',
                 color_continuous_scale='Turbo',  # Changed to Turbo for more contrast
                 labels={
-                    'log_order_rate_per_week': 'Order Rate (log)',
-                    'log_amount_spent_per_week': 'Amount Spent (log)',
-                    'chain_percentage': 'Chain Percentage',
+                    x_axis: x_axis.replace('_', ' ').title(),
+                    y_axis: y_axis.replace('_', ' ').title(),
+                    z_axis: z_axis.replace('_', ' ').title(),
                     'customer_age': 'Customer Age'
                 },
                 title='Customer Distribution in 3D Space'
@@ -391,9 +407,9 @@ else:
             # Update the layout for better visualization
             fig.update_layout(
                 scene=dict(
-                    xaxis_title='Order Rate (log)',
-                    yaxis_title='Amount Spent (log)',
-                    zaxis_title='Chain Percentage',
+                    xaxis_title=x_axis.replace('_', ' ').title(),
+                    yaxis_title=y_axis.replace('_', ' ').title(),
+                    zaxis_title=z_axis.replace('_', ' ').title(),
                     bgcolor='rgb(240,240,240)'
                 ),
                 margin=dict(l=0, r=0, b=0, t=30),
@@ -407,22 +423,22 @@ else:
             # Update marker properties
             fig.update_traces(
                 marker=dict(
-                    size=2,  # Reduced point size
-                    opacity=0.5,  # Increased transparency
+                    size=2,  # Further reduced point size for clarity
+                    opacity=0.3,  # Increased transparency to reduce overlap
                 )
             )
 
-            # Display the filtered plot in Streamlit
+            # Display the plot in Streamlit
             st.plotly_chart(fig, use_container_width=True)
             
             # Add color scale explanation
-            st.write("""
+            st.write(f"""
             ### 3D Visualization of Customer Distribution
             
-            This interactive 3D plot shows how customers are distributed based on three key metrics:
-            - **Order Rate**: Frequency of purchases (log-transformed)
-            - **Amount Spent**: Total spending per week (log-transformed)
-            - **Chain Percentage**: Preference for chain establishments
+            This interactive 3D plot shows how customers are distributed based on three selected metrics:
+            - **{x_axis.replace('_', ' ').title()}**: {x_axis.replace('_', ' ').title()}
+            - **{y_axis.replace('_', ' ').title()}**: {y_axis.replace('_', ' ').title()}
+            - **{z_axis.replace('_', ' ').title()}**: {z_axis.replace('_', ' ').title()}
             
             Points are colored by customer age using the Turbo color scale:
             - Colors transition from blue to red, representing the age spectrum.
