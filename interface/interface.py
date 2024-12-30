@@ -410,8 +410,9 @@ else:
                     xaxis_title=x_axis.replace('_', ' ').title(),
                     yaxis_title=y_axis.replace('_', ' ').title(),
                     zaxis_title=z_axis.replace('_', ' ').title(),
-                    bgcolor='rgb(240,240,240)'
+                    bgcolor='rgb(30, 30, 30)'  # Changed to dark background
                 ),
+                paper_bgcolor='rgb(30, 30, 30)',  # Set the overall paper background to dark
                 margin=dict(l=0, r=0, b=0, t=30),
                 scene_camera=dict(
                     up=dict(x=0, y=0, z=1),
@@ -420,11 +421,12 @@ else:
                 )
             )
 
-            # Update marker properties
+            # Update marker properties for better visibility on dark background
             fig.update_traces(
                 marker=dict(
                     size=2,  # Further reduced point size for clarity
                     opacity=0.3,  # Increased transparency to reduce overlap
+                    line=dict(width=0.5, color='white')  # Add white borders to markers for better contrast
                 )
             )
 
