@@ -356,13 +356,14 @@ else:
             # Load the data with cluster labels
             df = pickle.load(open("preprocessed_data_numerical.pkl", "rb"))
             
-            # Create the 3D scatter plot using Plotly Express
+            # Create the 3D scatter plot using Plotly Express with custom colors
             fig = px.scatter_3d(
                 df,
                 x='log_order_rate_per_week',
                 y='log_amount_spent_per_week',
                 z='chain_percentage',
-                color='customer_age',  # Changed from 'merged_labels' to an available column
+                color='customer_age',
+                color_continuous_scale='Viridis',  # Using Viridis colorscale for better contrast
                 labels={
                     'log_order_rate_per_week': 'Order Rate (log)',
                     'log_amount_spent_per_week': 'Amount Spent (log)',
@@ -377,14 +378,31 @@ else:
                 scene=dict(
                     xaxis_title='Order Rate (log)',
                     yaxis_title='Amount Spent (log)',
-                    zaxis_title='Chain Percentage'
+                    zaxis_title='Chain Percentage',
+                    # Improve visibility with darker background
+                    bgcolor='rgb(240,240,240)'
                 ),
-                margin=dict(l=0, r=0, b=0, t=30)
+                margin=dict(l=0, r=0, b=0, t=30),
+                # Update marker properties for better visibility
+                scene_camera=dict(
+                    up=dict(x=0, y=0, z=1),
+                    center=dict(x=0, y=0, z=0),
+                    eye=dict(x=1.5, y=1.5, z=1.5)
+                )
+            )
+
+            # Update marker properties
+            fig.update_traces(
+                marker=dict(
+                    size=4,  # Smaller point size for less overcrowding
+                    opacity=0.7,  # Some transparency to see overlapping points
+                )
             )
 
             # Display the plot in Streamlit
             st.plotly_chart(fig, use_container_width=True)
             
+            # Add color scale explanation
             st.write("""
             ### 3D Visualization of Customer Distribution
             
@@ -393,7 +411,9 @@ else:
             - **Amount Spent**: Total spending per week (log-transformed)
             - **Chain Percentage**: Preference for chain establishments
             
-            Points are colored by customer age to show additional patterns.
+            Points are colored by customer age using the Viridis color scale:
+            - Darker purple → Younger customers
+            - Yellow/Green → Older customers
             
             You can:
             - Rotate the plot by clicking and dragging
