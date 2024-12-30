@@ -434,8 +434,8 @@ else:
             fig.update_traces(
                 marker=dict(
                     size=2,  # Further reduced point size for clarity
-                    opacity=0.3,  # Increased transparency to reduce overlap
-                    line=dict(width=0.5, color='white')  # Add white borders to markers for better contrast
+                    opacity=0.8,  # Increased opacity for better visibility
+                    line=dict(width=0.1, color='white')  # Add white borders to markers for better contrast
                 )
             )
 
