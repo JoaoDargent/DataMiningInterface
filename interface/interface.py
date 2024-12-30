@@ -384,8 +384,8 @@ else:
             
             # Add selection boxes for X, Y, and Z axes
             x_axis = st.selectbox("Select X-axis", options=available_features, index=0)
-            y_axis = st.selectbox("Select Y-axis", options=available_features, index=1)
-            z_axis = st.selectbox("Select Z-axis", options=available_features, index=2)
+            y_axis = st.selectbox("Select Y-axis", options=[feature for feature in available_features if feature != x_axis], index=1)
+            z_axis = st.selectbox("Select Z-axis", options=[feature for feature in available_features if feature not in [x_axis, y_axis]], index=2)
             
             # Create the 3D scatter plot using Plotly Express with selected axes
             fig = px.scatter_3d(
@@ -394,7 +394,7 @@ else:
                 y=y_axis,
                 z=z_axis,
                 color='customer_age',
-                color_continuous_scale='Turbo',  # Changed to Turbo for more contrast
+                color_continuous_scale='Cividis',  # Changed from Turbo to Cividis for better contrast on dark background
                 labels={
                     x_axis: x_axis.replace('_', ' ').title(),
                     y_axis: y_axis.replace('_', ' ').title(),
@@ -410,7 +410,7 @@ else:
                     xaxis_title=x_axis.replace('_', ' ').title(),
                     yaxis_title=y_axis.replace('_', ' ').title(),
                     zaxis_title=z_axis.replace('_', ' ').title(),
-                    bgcolor='rgb(30, 30, 30)'  # Changed to dark background
+                    bgcolor='rgb(30, 30, 30)'  # Ensure background remains dark
                 ),
                 paper_bgcolor='rgb(30, 30, 30)',  # Set the overall paper background to dark
                 margin=dict(l=0, r=0, b=0, t=30),
@@ -442,8 +442,8 @@ else:
             - **{y_axis.replace('_', ' ').title()}**: {y_axis.replace('_', ' ').title()}
             - **{z_axis.replace('_', ' ').title()}**: {z_axis.replace('_', ' ').title()}
             
-            Points are colored by customer age using the Turbo color scale:
-            - Colors transition from blue to red, representing the age spectrum.
+            Points are colored by customer age using the Cividis color scale:
+            - Colors transition from blue to yellow, enhancing contrast on a dark background.
             
             You can:
             - Rotate the plot by clicking and dragging
