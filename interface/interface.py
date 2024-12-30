@@ -387,18 +387,27 @@ else:
             y_axis = st.selectbox("Select Y-axis", options=[feature for feature in available_features if feature != x_axis], index=1)
             z_axis = st.selectbox("Select Z-axis", options=[feature for feature in available_features if feature not in [x_axis, y_axis]], index=2)
             
-            # Create the 3D scatter plot using Plotly Express with selected axes
+            # Add after the axis selection boxes
+            color_by = st.selectbox(
+                "Color points by:",
+                options=['cluster_labels', 'customer_age'],
+                format_func=lambda x: 'Cluster' if x == 'cluster_labels' else 'Customer Age'
+            )
+            
+            # Update the scatter plot creation
             fig = px.scatter_3d(
                 filtered_df,
                 x=x_axis,
                 y=y_axis,
                 z=z_axis,
-                color='customer_age',
-                color_continuous_scale='Cividis',  # Changed from Turbo to Cividis for better contrast on dark background
+                color=color_by,
+                color_continuous_scale='Cividis' if color_by == 'customer_age' else None,
+                color_discrete_sequence=px.colors.qualitative.Set1 if color_by == 'cluster_labels' else None,
                 labels={
                     x_axis: x_axis.replace('_', ' ').title(),
                     y_axis: y_axis.replace('_', ' ').title(),
                     z_axis: z_axis.replace('_', ' ').title(),
+                    'cluster_labels': 'Cluster',
                     'customer_age': 'Customer Age'
                 },
                 title='Customer Distribution in 3D Space'
