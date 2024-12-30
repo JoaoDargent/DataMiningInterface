@@ -356,14 +356,29 @@ else:
             # Load the data with cluster labels
             df = pickle.load(open("preprocessed_data_numerical.pkl", "rb"))
             
-            # Create the 3D scatter plot using Plotly Express with custom colors
+            # Add a slider to filter customer age
+            min_age, max_age = int(df['customer_age'].min()), int(df['customer_age'].max())
+            selected_age = st.slider(
+                'Select Customer Age Range:',
+                min_value=min_age,
+                max_value=max_age,
+                value=(min_age, max_age)
+            )
+            
+            # Filter the DataFrame based on selected age range
+            filtered_df = df[
+                (df['customer_age'] >= selected_age[0]) & 
+                (df['customer_age'] <= selected_age[1])
+            ]
+            
+            # Create the 3D scatter plot using Plotly Express with filtered data
             fig = px.scatter_3d(
-                df,
+                filtered_df,
                 x='log_order_rate_per_week',
                 y='log_amount_spent_per_week',
                 z='chain_percentage',
                 color='customer_age',
-                color_continuous_scale='Viridis',  # Using Viridis colorscale for better contrast
+                color_continuous_scale='Turbo',  # Changed to Turbo for more contrast
                 labels={
                     'log_order_rate_per_week': 'Order Rate (log)',
                     'log_amount_spent_per_week': 'Amount Spent (log)',
@@ -379,11 +394,9 @@ else:
                     xaxis_title='Order Rate (log)',
                     yaxis_title='Amount Spent (log)',
                     zaxis_title='Chain Percentage',
-                    # Improve visibility with darker background
                     bgcolor='rgb(240,240,240)'
                 ),
                 margin=dict(l=0, r=0, b=0, t=30),
-                # Update marker properties for better visibility
                 scene_camera=dict(
                     up=dict(x=0, y=0, z=1),
                     center=dict(x=0, y=0, z=0),
@@ -394,12 +407,12 @@ else:
             # Update marker properties
             fig.update_traces(
                 marker=dict(
-                    size=4,  # Smaller point size for less overcrowding
-                    opacity=0.7,  # Some transparency to see overlapping points
+                    size=2,  # Reduced point size
+                    opacity=0.5,  # Increased transparency
                 )
             )
 
-            # Display the plot in Streamlit
+            # Display the filtered plot in Streamlit
             st.plotly_chart(fig, use_container_width=True)
             
             # Add color scale explanation
@@ -411,9 +424,8 @@ else:
             - **Amount Spent**: Total spending per week (log-transformed)
             - **Chain Percentage**: Preference for chain establishments
             
-            Points are colored by customer age using the Viridis color scale:
-            - Darker purple → Younger customers
-            - Yellow/Green → Older customers
+            Points are colored by customer age using the Turbo color scale:
+            - Colors transition from blue to red, representing the age spectrum.
             
             You can:
             - Rotate the plot by clicking and dragging
