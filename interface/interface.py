@@ -6,18 +6,10 @@ import plotly.express as px
 
 # Create sidebar navigation
 st.sidebar.title('Navigation')
-page = st.sidebar.radio('Go to', ['About Us', 'EDA Raw Data', 'Segmentation & Clustering', 'Final Clusterization'])
-
-# About Us page
-if page == 'About Us':
-    st.title('About Us')
-    st.write('Welcome to our data analysis application. We help you understand and segment your data.')
-    
-    if st.button('Learn More'):
-        st.write('We are a team of data scientists passionate about finding insights in data.')
+page = st.sidebar.radio('Go to', ['EDA Raw Data', 'Segmentation & Clustering', 'Final Clusterization'])
 
 # EDA (Exploratory Data Analysis) page        
-elif page == 'EDA Raw Data':
+if page == 'EDA Raw Data':
     st.title('Exploratory Data Analysis')
     st.write('Upload your data and explore key insights through visualizations and statistics.')
     
