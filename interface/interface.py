@@ -354,7 +354,7 @@ else:
         st.header("3D Cluster Visualization")
         try:
             # Load the data with cluster labels
-            df = pickle.load(open("preprocessed_data_numerical.pkl", "rb"))
+            df = pickle.load(open("customer_id_merged_unscaled.pkl", "rb"))
             
             # Add a slider to filter customer age
             min_age, max_age = int(df['customer_age'].min()), int(df['customer_age'].max())
