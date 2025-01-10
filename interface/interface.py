@@ -315,153 +315,117 @@ elif page == 'Segmentation & Clustering':
 # Final Clusterization page
 else:
     st.title('Final Clusterization')
-    st.write('View the final clustering results and customer segments.')
+    st.write('Explore customer segments through interactive 3D visualization.')
     
-    # Create tabs for different clustering approaches
-    final_tab1, final_tab2, final_tab3 = st.tabs([
-        "Demographic Segments", 
-        "Purchase Behavior Segments",
-        "3D Cluster Visualization"
-    ])
-    
-    with final_tab1:
-        st.header("Final Demographic Segments")
-        try:
-            st.image('interface/plots/final/demographic_segments.png', width=None)
-            st.write("""
-            ### Key Demographic Segments:
-            - Detailed breakdown of final customer segments
-            - Key characteristics of each group
-            - Segment size and distribution
-            """)
-        except Exception as e:
-            st.error(f"Error loading demographic segments: {str(e)}")
-    
-    with final_tab2:
-        st.header("Final Purchase Behavior Segments")
-        try:
-            st.image('interface/plots/final/purchase_segments.png', width=None)
-            st.write("""
-            ### Key Purchase Behavior Segments:
-            - Purchase patterns for each segment
-            - Spending habits and preferences
-            - Transaction frequency analysis
-            """)
-        except Exception as e:
-            st.error(f"Error loading purchase behavior segments: {str(e)}")
-    
-    with final_tab3:
-        st.header("3D Cluster Visualization")
-        try:
-            # Load the data with cluster labels
-            df = pickle.load(open("customer_id_merged_unscaled.pkl", "rb"))
-            
-            # Add a slider to filter customer age
-            min_age, max_age = int(df['customer_age'].min()), int(df['customer_age'].max())
-            selected_age = st.slider(
-                'Select Customer Age Range:',
-                min_value=min_age,
-                max_value=max_age,
-                value=(min_age, max_age)
-            )
-            
-            # Filter the DataFrame based on selected age range
-            filtered_df = df[
-                (df['customer_age'] >= selected_age[0]) & 
-                (df['customer_age'] <= selected_age[1])
-            ]
-            
-            # Define available features for axis selection
-            available_features = [
-                'log_order_rate_per_week', 
-                'log_amount_spent_per_week', 
-                'chain_percentage',
-                'customer_age',
-                'Recency', 
-                'average_product_price', 
-                'log_vendor_count'
-            ]
-            
-            # Add selection boxes for X, Y, and Z axes
-            x_axis = st.selectbox("Select X-axis", options=available_features, index=0)
-            y_axis = st.selectbox("Select Y-axis", options=[feature for feature in available_features if feature != x_axis], index=1)
-            z_axis = st.selectbox("Select Z-axis", options=[feature for feature in available_features if feature not in [x_axis, y_axis]], index=2)
-            
-            # Add after the axis selection boxes
-            color_by = st.selectbox(
-                "Color points by:",
-                options=['merged_labels', 'customer_age'],
-                format_func=lambda x: 'Cluster' if x == 'merged_labels' else 'Customer Age'
-            )
-            
-            # Update the scatter plot creation
-            fig = px.scatter_3d(
-                filtered_df,
-                x=x_axis,
-                y=y_axis,
-                z=z_axis,
-                color=color_by,
-                color_continuous_scale='Cividis' if color_by == 'customer_age' else None,
-                # Use distinct colors for clusters
-                color_discrete_sequence=['#E41A1C', '#4DAF4A', '#377EB8'] if color_by == 'merged_labels' else None,
-                labels={
-                    x_axis: x_axis.replace('_', ' ').title(),
-                    y_axis: y_axis.replace('_', ' ').title(),
-                    z_axis: z_axis.replace('_', ' ').title(),
-                    'merged_labels': 'Cluster',
-                    'customer_age': 'Customer Age'
-                },
-                title='Customer Distribution in 3D Space'
-            )
+    try:
+        # Load the data with cluster labels
+        df = pickle.load(open("customer_id_merged_unscaled.pkl", "rb"))
+        
+        # Add a slider to filter customer age
+        min_age, max_age = int(df['customer_age'].min()), int(df['customer_age'].max())
+        selected_age = st.slider(
+            'Select Customer Age Range:',
+            min_value=min_age,
+            max_value=max_age,
+            value=(min_age, max_age)
+        )
+        
+        # Filter the DataFrame based on selected age range
+        filtered_df = df[
+            (df['customer_age'] >= selected_age[0]) & 
+            (df['customer_age'] <= selected_age[1])
+        ]
+        
+        # Define available features for axis selection
+        available_features = [
+            'log_order_rate_per_week', 
+            'log_amount_spent_per_week', 
+            'chain_percentage',
+            'customer_age',
+            'Recency', 
+            'average_product_price', 
+            'log_vendor_count'
+        ]
+        
+        # Add selection boxes for X, Y, and Z axes
+        x_axis = st.selectbox("Select X-axis", options=available_features, index=0)
+        y_axis = st.selectbox("Select Y-axis", options=[feature for feature in available_features if feature != x_axis], index=1)
+        z_axis = st.selectbox("Select Z-axis", options=[feature for feature in available_features if feature not in [x_axis, y_axis]], index=2)
+        
+        # Add after the axis selection boxes
+        color_by = st.selectbox(
+            "Color points by:",
+            options=['merged_labels', 'customer_age'],
+            format_func=lambda x: 'Cluster' if x == 'merged_labels' else 'Customer Age'
+        )
+        
+        # Update the scatter plot creation
+        fig = px.scatter_3d(
+            filtered_df,
+            x=x_axis,
+            y=y_axis,
+            z=z_axis,
+            color=color_by,
+            color_continuous_scale='Cividis' if color_by == 'customer_age' else None,
+            color_discrete_sequence=['#E41A1C', '#4DAF4A', '#377EB8'] if color_by == 'merged_labels' else None,
+            labels={
+                x_axis: x_axis.replace('_', ' ').title(),
+                y_axis: y_axis.replace('_', ' ').title(),
+                z_axis: z_axis.replace('_', ' ').title(),
+                'merged_labels': 'Cluster',
+                'customer_age': 'Customer Age'
+            },
+            title='Customer Distribution in 3D Space'
+        )
 
-            # Update the layout for better visualization
-            fig.update_layout(
-                scene=dict(
-                    xaxis_title=x_axis.replace('_', ' ').title(),
-                    yaxis_title=y_axis.replace('_', ' ').title(),
-                    zaxis_title=z_axis.replace('_', ' ').title(),
-                    bgcolor='rgb(30, 30, 30)'  # Ensure background remains dark
-                ),
-                paper_bgcolor='rgb(30, 30, 30)',  # Set the overall paper background to dark
-                margin=dict(l=0, r=0, b=0, t=30),
-                scene_camera=dict(
-                    up=dict(x=0, y=0, z=1),
-                    center=dict(x=0, y=0, z=0),
-                    eye=dict(x=1.5, y=1.5, z=1.5)
-                )
+        # Update the layout for better visualization
+        fig.update_layout(
+            scene=dict(
+                xaxis_title=x_axis.replace('_', ' ').title(),
+                yaxis_title=y_axis.replace('_', ' ').title(),
+                zaxis_title=z_axis.replace('_', ' ').title(),
+                bgcolor='rgb(30, 30, 30)'  # Ensure background remains dark
+            ),
+            paper_bgcolor='rgb(30, 30, 30)',  # Set the overall paper background to dark
+            margin=dict(l=0, r=0, b=0, t=30),
+            scene_camera=dict(
+                up=dict(x=0, y=0, z=1),
+                center=dict(x=0, y=0, z=0),
+                eye=dict(x=1.5, y=1.5, z=1.5)
             )
+        )
 
-            # Update marker properties for better visibility on dark background
-            fig.update_traces(
-                marker=dict(
-                    size=3,  # Slightly larger size for better visibility
-                    opacity=0.8,  # Reduced opacity (0.6 instead of 0.8)
-                    line=dict(width=0.05, color='rgba(255, 255, 255, 0.3)')  # Thinner, more transparent white border
-                )
+        # Update marker properties for better visibility on dark background
+        fig.update_traces(
+            marker=dict(
+                size=3,  # Slightly larger size for better visibility
+                opacity=0.8,  # Reduced opacity (0.6 instead of 0.8)
+                line=dict(width=0.05, color='rgba(255, 255, 255, 0.3)')  # Thinner, more transparent white border
             )
+        )
 
-            # Display the plot in Streamlit
-            st.plotly_chart(fig, use_container_width=True)
-            
-            # Add color scale explanation
-            st.write(f"""
-            ### 3D Visualization of Customer Distribution
-            
-            This interactive 3D plot shows how customers are distributed based on three selected metrics:
-            - **{x_axis.replace('_', ' ').title()}**: {x_axis.replace('_', ' ').title()}
-            - **{y_axis.replace('_', ' ').title()}**: {y_axis.replace('_', ' ').title()}
-            - **{z_axis.replace('_', ' ').title()}**: {z_axis.replace('_', ' ').title()}
-            
-            Points are colored by customer age using the Cividis color scale:
-            - Colors transition from blue to yellow, enhancing contrast on a dark background.
-            
-            You can:
-            - Rotate the plot by clicking and dragging
-            - Zoom in/out using the scroll wheel
-            - Double click to reset the view
-            - Hover over points to see detailed information
-            """)
+        # Display the plot in Streamlit
+        st.plotly_chart(fig, use_container_width=True)
+        
+        # Add color scale explanation
+        st.write(f"""
+        ### 3D Visualization of Customer Distribution
+        
+        This interactive 3D plot shows how customers are distributed based on three selected metrics:
+        - **{x_axis.replace('_', ' ').title()}**: {x_axis.replace('_', ' ').title()}
+        - **{y_axis.replace('_', ' ').title()}**: {y_axis.replace('_', ' ').title()}
+        - **{z_axis.replace('_', ' ').title()}**: {z_axis.replace('_', ' ').title()}
+        
+        Points are colored by {'cluster assignment' if color_by == 'merged_labels' else 'customer age'}:
+        {'- Each color represents a different customer segment' if color_by == 'merged_labels' else '- Colors transition from blue to yellow, representing younger to older customers'}
+        
+        You can:
+        - Rotate the plot by clicking and dragging
+        - Zoom in/out using the scroll wheel
+        - Double click to reset the view
+        - Hover over points to see detailed information
+        """)
 
-        except Exception as e:
-            st.error(f"Error loading 3D visualization: {str(e)}")
-            st.info("Please make sure the data file is available and contains the required columns.")
+    except Exception as e:
+        st.error(f"Error loading 3D visualization: {str(e)}")
+        st.info("Please make sure the data file is available and contains the required columns.")
