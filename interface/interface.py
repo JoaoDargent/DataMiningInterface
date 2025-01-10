@@ -402,7 +402,8 @@ else:
                 z=z_axis,
                 color=color_by,
                 color_continuous_scale='Cividis' if color_by == 'customer_age' else None,
-                color_discrete_sequence=px.colors.qualitative.Set1 if color_by == 'merged_labels' else None,
+                # Use distinct colors for clusters
+                color_discrete_sequence=['#E41A1C', '#4DAF4A', '#377EB8'] if color_by == 'merged_labels' else None,
                 labels={
                     x_axis: x_axis.replace('_', ' ').title(),
                     y_axis: y_axis.replace('_', ' ').title(),
