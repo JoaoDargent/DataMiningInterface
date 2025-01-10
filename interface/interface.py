@@ -62,9 +62,8 @@ elif page == 'Segmentation & Clustering':
             st.image('interface/plots/clustering/demographic/elbow_method.png', width=None)
             st.write("""
             **Analysis of Elbow Method Results:**
-            - The graph shows a clear elbow at k=4 clusters
-            - After this point, the reduction in distortion becomes much smaller
-            - This suggests that 4 clusters provide a good balance between cluster count and explanation of variance
+            Based on the graph above is not clear if we should choose 3 or 4 clusters. 
+            The R² isn't very different from 3 to 4 clusters.
             """)
         except Exception as e:
             st.error(f"Error loading elbow method plot: {str(e)}")
@@ -86,9 +85,9 @@ elif page == 'Segmentation & Clustering':
                 st.image('interface/plots/clustering/demographic/hierarchical_kmeans/silhouette.png', 
                        width=None)
                 st.write("""
-                The silhouette analysis validates our cluster selection:
-                - Higher silhouette scores indicate better-defined clusters
-                - Shows how well-separated the resulting clusters are
+                        It is not very common to see the silhouette_score decreasing as we add more clusters.
+                        However, the dataset might have a strong natural separation into 2 groups.
+                        Adding more clusters forces the algorithm to split well-formed groups, leading to lower silhouette scores.
                 """)
                 
                 # Cluster Profiles
@@ -130,7 +129,8 @@ elif page == 'Segmentation & Clustering':
                 st.write("### Inertia Analysis")
                 st.image('interface/plots/clustering/demographic/som_kmeans/inertia.png', 
                        width=None)
-                st.write("Shows the convergence of the SOM algorithm")
+                st.write("""Beyond 4 clusters, the decrease in inertia slows down, which suggests diminishing returns for adding more clusters.
+                            The "elbow point" appears to be at 4 clusters, where the rate of improvement in inertia reduction becomes less pronounced.""")
 
                 # Final Clusters
                 st.write("### Final Clusters")
@@ -152,6 +152,12 @@ elif page == 'Segmentation & Clustering':
                 st.write("### Hierarchical Clustering Dendrogram")
                 st.image('interface/plots/clustering/demographic/som_hierarchichal/dendogram.png', 
                        width=None)
+                st.write("""
+                The threshold (red line) intersects just below a noticeable "gap" in the dendrogram.
+                Above this threshold, the vertical distances between clusters are much larger, meaning clusters are more distinct.
+
+                Based on this analysis 6 is the right choice.
+                """)
                 
                 # Cluster Profiles
                 st.write("### Cluster Profiles")
@@ -167,8 +173,15 @@ elif page == 'Segmentation & Clustering':
                 st.write("### Epsilon Parameter Selection")
                 st.image('interface/plots/clustering/demographic/dbscan/eps.png', 
                        width=None)
+                st.write("""
+                         This plot above is typically used for determining an appropriate value for the epsilon (eps) parameter in DBSCAN clustering. The idea is to find the "elbow point" on the graph, which indicates the distance value where the curve transitions from a steep increase to a flatter slope. This point is a good candidate for the eps parameter, as it represents a natural clustering distance threshold in the data. 
+                """)
+
                 st.image('interface/plots/clustering/demographic/dbscan/epsZoom.png', 
                        width=None)
+                st.write("""
+                         After zooming in, we can see in the graph above that the elbow point is around 1.0, so that is the number that we are going to choose for eps.
+                         """)
                 
                 # Cluster Profiles
                 st.write("### Cluster Profiles")
@@ -205,9 +218,7 @@ elif page == 'Segmentation & Clustering':
             st.image('interface/plots/clustering/purchase/elbow_method.png', width=None)
             st.write("""
             **Analysis of Elbow Method Results:**
-            - The elbow curve indicates an optimal point at k=3 clusters
-            - The distortion score stabilizes after this point
-            - This suggests that 3 distinct purchase behavior patterns exist in our data
+                     Based on the R² plot the correct number of clusters might be 3 or 4, but the choice isn't clear.
             """)
             
             # Purchase behavior clustering analysis tabs
@@ -225,6 +236,9 @@ elif page == 'Segmentation & Clustering':
                     st.write("### Silhouette Analysis")
                     st.image('interface/plots/clustering/purchase/hierarchical_kmeans/silhouette.png', 
                            width=None)
+                    st.write("""
+                             Based on the graph above the choice is more clear. We are going to choose 3 clusters. The gain in silhouette score between 3 and 4 is very low. With 3 clusters, the results are simpler to interpret and visualize.
+                             """)
                     
                     st.write("### Final Cluster")
                     st.image('interface/plots/clustering/purchase/hierarchical_kmeans/final_cluster.png', 
@@ -282,9 +296,15 @@ elif page == 'Segmentation & Clustering':
                     st.write("### Epsilon Parameter Selection")
                     st.image('interface/plots/clustering/purchase/dbscan/eps.png', 
                            width=None)
+                    st.write("""
+                             One more time the right eps isn't clear in the graph above.
+                             """)
                     st.write("### Zooming in on the elbow part")
                     st.image('interface/plots/clustering/purchase/dbscan/epsZoom.png', 
                            width=None)
+                    st.write("""
+                             After zooming in we can see that the "elbow" appears to be somewhere around the 0.25 - 0.30 range on the y-axis, which suggests that eps might be in this range. There isn't a choice that is 100% right. We are going to choose eps= 0.30 but it is a little bit subjective.
+                             """)
                     
                     st.write("### Cluster Profiling")
                     st.image('interface/plots/clustering/purchase/dbscan/cluster_profiling.png', 

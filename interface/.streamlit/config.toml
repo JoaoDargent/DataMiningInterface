@@ -3,9 +3,9 @@ runOnSave = true
 headless = false
 
 [theme]
-primaryColor = "#F63366"
+primaryColor = "#98B82A"
 backgroundColor = "#FFFFFF"
-secondaryBackgroundColor = "#F0F2F6"
+secondaryBackgroundColor = "#75787B"
 textColor = "#262730"
 font = "sans serif"
 
