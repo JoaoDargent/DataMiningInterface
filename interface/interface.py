@@ -433,9 +433,9 @@ else:
             # Update marker properties for better visibility on dark background
             fig.update_traces(
                 marker=dict(
-                    size=2,  # Further reduced point size for clarity
-                    opacity=0.8,  # Increased opacity for better visibility
-                    line=dict(width=0.1, color='white')  # Add white borders to markers for better contrast
+                    size=3,  # Slightly larger size for better visibility
+                    opacity=0.8,  # Reduced opacity (0.6 instead of 0.8)
+                    line=dict(width=0.05, color='rgba(255, 255, 255, 0.3)')  # Thinner, more transparent white border
                 )
             )
 
