@@ -390,8 +390,8 @@ else:
             # Add after the axis selection boxes
             color_by = st.selectbox(
                 "Color points by:",
-                options=['cluster_labels', 'customer_age'],
-                format_func=lambda x: 'Cluster' if x == 'cluster_labels' else 'Customer Age'
+                options=['merged_labels', 'customer_age'],
+                format_func=lambda x: 'Cluster' if x == 'merged_labels' else 'Customer Age'
             )
             
             # Update the scatter plot creation
@@ -402,12 +402,12 @@ else:
                 z=z_axis,
                 color=color_by,
                 color_continuous_scale='Cividis' if color_by == 'customer_age' else None,
-                color_discrete_sequence=px.colors.qualitative.Set1 if color_by == 'cluster_labels' else None,
+                color_discrete_sequence=px.colors.qualitative.Set1 if color_by == 'merged_labels' else None,
                 labels={
                     x_axis: x_axis.replace('_', ' ').title(),
                     y_axis: y_axis.replace('_', ' ').title(),
                     z_axis: z_axis.replace('_', ' ').title(),
-                    'cluster_labels': 'Cluster',
+                    'merged_labels': 'Cluster',
                     'customer_age': 'Customer Age'
                 },
                 title='Customer Distribution in 3D Space'
